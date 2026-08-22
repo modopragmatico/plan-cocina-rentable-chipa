@@ -4,158 +4,261 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Guía: Vender comida en la calle y generar ingreso extra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   /* ===== PALETA — cambiá acá y se actualiza toda la página ===== */
   :root{
-    --bg: #14100d;
-    --bg-panel: #1e1812;
-    --bg-panel-2: #241c15;
-    --text: #f2ece2;
-    --text-dim: #b8ada0;
-    --accent: #d97a3f;
-    --accent-dark: #a85a2a;
-    --radius: 12px;
+    --bg: #f7f8fb;             /* fondo general claro */
+    --bg-cream: #fdf7e9;        /* sección de bonos */
+    --bg-dark: #101a2e;         /* secciones oscuras */
+    --bg-dark-2: #16233d;       /* tarjetas dentro de lo oscuro */
+    --panel: #ffffff;           /* tarjetas sobre fondo claro */
+    --panel-border: #ecebf3;
+    --text: #101a2e;            /* texto principal (oscuro, sobre claro) */
+    --text-dim: #6b7280;        /* texto secundario sobre claro */
+    --text-light: #ffffff;      /* texto sobre fondo oscuro */
+    --text-light-dim: #aab2c5;  /* texto secundario sobre fondo oscuro */
+    --accent: #f5a623;          /* naranja principal */
+    --accent-dark: #b4741a;     /* naranja oscuro, para degradé */
+    --pink-bg: #fdeceb;
+    --pink-text: #e0524c;
+    --green: #1f9d55;
+    --radius: 16px;
+    --radius-sm: 10px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body{
     background: var(--bg);
     color: var(--text);
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    line-height: 1.5;
-    padding-bottom: 90px; /* espacio para la barra sticky de abajo */
+    font-family: 'Poppins', system-ui, sans-serif;
+    line-height: 1.55;
+    padding-bottom: 86px; /* espacio para la barra sticky de abajo */
   }
   .container{ max-width: 720px; margin: 0 auto; padding: 0 20px; }
+  .container-wide{ max-width: 900px; margin: 0 auto; padding: 0 20px; }
 
   /* ===== BARRA SUPERIOR CON CONTADOR ===== */
   .top-bar{
-    background: var(--accent); color: #14100d;
-    text-align: center; font-weight: 700; font-size: 0.9rem;
+    background: var(--pink-bg); color: var(--pink-text);
+    text-align: center; font-weight: 700; font-size: 0.85rem;
     padding: 10px;
   }
+  .top-bar span{ background:#101a2e; color:#fff; border-radius:6px; padding:2px 8px; font-weight:700; }
 
   /* ===== HERO ===== */
-  .hero{ padding: 28px 0 10px; }
-  .hero-img{ width: 100%; border-radius: var(--radius); display:block; margin-bottom: 18px; }
-  h1{ font-size: 1.6rem; margin-bottom: 8px; }
-  .subtitle{ color: var(--text-dim); margin-bottom: 16px; }
+  .hero{ padding: 36px 0 10px; text-align: center; }
+  .hero-img{ width: 100%; border-radius: var(--radius); display:block; margin-bottom: 24px; }
+  h1{ font-size: 2rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.5px; margin-bottom: 14px; }
+  .subtitle{ color: var(--text-dim); font-size: 1.05rem; max-width: 560px; margin: 0 auto 22px; }
 
-  /* ===== BOTÓN CTA (a Mercado Pago) ===== */
+  .rating{ display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom: 22px; font-size:0.9rem; color: var(--text-dim); }
+  .rating .stars{ color: var(--accent); letter-spacing: 2px; }
+
+  /* ===== TARJETA DE OFERTA (blanca, tipo checkout) ===== */
+  .offer-card{
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: var(--radius);
+    box-shadow: 0 12px 30px rgba(16,26,46,0.06);
+    padding: 22px; margin: 0 0 24px;
+    text-align: left;
+  }
+  .offer-flag{
+    background: var(--pink-bg); color: var(--pink-text);
+    font-size: 0.78rem; font-weight: 700;
+    border-radius: 8px; padding: 8px 12px; margin-bottom: 16px;
+  }
+  .price-row{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom: 6px; }
+  .price-old{ text-decoration: line-through; color: var(--text-dim); font-size: 1rem; }
+  .price-new{ font-size: 2.3rem; font-weight: 800; color: var(--text); }
+  .savings{ color: var(--green); font-weight: 700; font-size: 0.9rem; margin-bottom: 16px; }
+
+  .bonus-row{ display:flex; justify-content:space-between; align-items:center; padding: 10px 0; border-top: 1px dashed var(--panel-border); font-size:0.9rem; }
+  .bonus-row .tag{ color: var(--green); font-weight:700; }
+
+  .cupos-row{
+    background: var(--pink-bg); color: var(--pink-text); font-weight:700; font-size:0.85rem;
+    border-radius: var(--radius-sm); padding: 10px 14px; margin: 14px 0; text-align:center;
+  }
+  .countdown-row{
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    background: var(--pink-bg); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 16px;
+    font-size:0.9rem; color: var(--pink-text); font-weight:600;
+  }
+  .countdown-row .badge{ background: var(--pink-text); color:#fff; font-weight:800; border-radius:6px; padding:3px 10px; }
+
+  /* ===== BOTÓN CTA ===== */
   .cta-button{
     display: block; width: 100%; text-align: center;
-    background: var(--accent); color: #14100d;
-    font-weight: 700; font-size: 1.1rem;
-    padding: 18px 24px; border-radius: var(--radius);
-    text-decoration: none; margin: 16px 0;
-    transition: background 0.2s, transform 0.1s;
+    background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+    color: #14100d;
+    font-weight: 700; font-size: 1.05rem;
+    padding: 17px 24px; border-radius: 12px;
+    text-decoration: none; margin: 6px 0 4px;
+    box-shadow: 0 10px 20px rgba(245,166,35,0.28);
+    transition: transform 0.15s, box-shadow 0.15s;
   }
-  .cta-button:hover{ background: var(--accent-dark); transform: translateY(-1px); }
-  .cta-sub{ text-align:center; color: var(--text-dim); font-size: 0.8rem; margin-top:-8px; margin-bottom:20px; }
+  .cta-button:hover{ transform: translateY(-1px); box-shadow: 0 14px 26px rgba(245,166,35,0.35); }
+  .cta-sub{ text-align:center; color: var(--text-dim); font-size: 0.8rem; margin: 6px 0 4px; }
 
-  /* ===== OFERTA ===== */
-  .offer-box{
-    background: var(--bg-panel);
-    border: 1px solid #33291d;
-    border-radius: var(--radius);
-    padding: 20px; margin: 20px 0; text-align: center;
-  }
-  .price-old{ text-decoration: line-through; color: var(--text-dim); font-size: 1rem; }
-  .price-new{ font-size: 2.1rem; font-weight: 800; color: var(--accent); margin: 4px 0; }
-  .price-note{ color: var(--text-dim); font-size: 0.85rem; }
-
-  /* ===== QUÉ VAS A ENCONTRAR ===== */
-  .section-title{ font-size: 1.3rem; margin: 30px 0 14px; text-align:center; }
-  .feature-grid{ display: grid; gap: 12px; }
-  .feature-card{
-    background: var(--bg-panel); border-radius: var(--radius);
-    padding: 16px; display: flex; gap: 12px; align-items: flex-start;
-  }
-  .feature-icon{ font-size: 1.5rem; }
-  .feature-card h3{ font-size: 1rem; margin-bottom: 4px; }
-  .feature-card p{ color: var(--text-dim); font-size: 0.9rem; }
-
-  /* ===== "¿TE SENTÍS IDENTIFICADO?" ===== */
-  .pain-item{
-    display:flex; gap:10px; align-items:flex-start;
-    margin-bottom: 12px;
-  }
-  .pain-item .x{ color:#e05656; font-weight:700; }
-  .pain-item p{ color: var(--text-dim); font-size: 0.9rem; }
-
-  /* ===== TESTIMONIOS (reales — vos completás con clientes de verdad) ===== */
-  .testimonial-card{
-    background: var(--bg-panel); border-radius: var(--radius);
-    padding: 16px; margin-bottom: 12px;
-  }
-  .testimonial-card .stars{ color: var(--accent); margin-bottom: 6px; }
-  .testimonial-card p{ color: var(--text-dim); font-size: 0.9rem; margin-bottom: 8px; }
-  .testimonial-card .name{ font-weight: 700; font-size: 0.85rem; }
-
-  /* ===== GARANTÍA ===== */
-  .guarantee{
-    display:flex; align-items:center; gap:14px;
-    background: var(--bg-panel-2); border-radius: var(--radius);
-    padding: 16px; margin: 20px 0;
-  }
-  .guarantee .icon{ font-size: 2rem; }
-  .guarantee p{ color: var(--text-dim); font-size: 0.85rem; }
-
-  /* ===== FAQ (acordeón nativo, sin JS) ===== */
-  details{ background: var(--bg-panel); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 10px; }
-  summary{ cursor: pointer; font-weight: 600; }
-  details p{ color: var(--text-dim); font-size: 0.9rem; margin-top: 8px; }
-
-  footer{ text-align:center; color: var(--text-dim); font-size: 0.75rem; padding: 30px 0; }
-
-  /* ===== BULLETS DE BENEFICIOS (cerca del botón) ===== */
-  .benefit-list{ list-style: none; margin: 0 0 18px; }
-  .benefit-list li{
-    display: flex; align-items: flex-start; gap: 10px;
-    color: var(--text-dim); font-size: 0.95rem; margin-bottom: 8px;
-  }
-  .benefit-list li::before{ content: "✓"; color: var(--accent); font-weight: 800; }
-
-  /* ===== BARRA DE CONFIANZA ===== */
   .trust-bar{
     display: flex; justify-content: space-around; gap: 8px;
-    text-align: center; margin: 14px 0 20px;
+    text-align: center; margin: 18px 0 6px;
   }
-  .trust-item{ flex: 1; }
-  .trust-item .icon{ font-size: 1.4rem; display:block; margin-bottom: 4px; }
-  .trust-item span.label{ font-size: 0.75rem; color: var(--text-dim); }
-
-  /* ===== CUPOS (urgencia real, manual) ===== */
-  .cupos-badge{
-    display: inline-block; background: var(--bg-panel-2);
-    color: var(--accent); font-weight: 700; font-size: 0.85rem;
-    padding: 6px 14px; border-radius: 20px; margin-top: 8px;
-  }
+  .trust-item{ flex: 1; font-size: 0.78rem; color: var(--text-dim); }
 
   /* ===== ORDER BUMP ===== */
   .order-bump{
-    background: var(--bg-panel-2); border: 1px dashed var(--accent);
-    border-radius: var(--radius); padding: 14px; margin: 16px 0;
+    background: #fff8ec; border: 1.5px dashed var(--accent);
+    border-radius: var(--radius-sm); padding: 14px; margin: 16px 0;
     display: flex; gap: 12px; align-items: flex-start; cursor: pointer;
   }
   .order-bump input{ margin-top: 4px; width: 18px; height: 18px; accent-color: var(--accent); }
   .order-bump h3{ font-size: 0.95rem; margin-bottom: 4px; }
   .order-bump p{ color: var(--text-dim); font-size: 0.85rem; }
-  .order-bump .bump-price{ color: var(--accent); font-weight: 700; }
+  .order-bump .bump-price{ color: var(--accent-dark); font-weight: 700; }
+
+  /* ===== SECCIÓN CREMA (bonos) ===== */
+  .section-cream{ background: var(--bg-cream); padding: 44px 0; margin-top: 30px; }
+  .section-eyebrow{ text-align:center; color: var(--text-dim); font-size:0.95rem; margin-bottom: 26px; }
+  .section-title{ font-size: 1.6rem; font-weight: 800; margin: 0 0 4px; text-align:center; letter-spacing:-0.3px; }
+
+  .bonus-card{
+    background: var(--panel); border-radius: var(--radius); border: 1px solid var(--panel-border);
+    padding: 18px; display:flex; justify-content:space-between; align-items:flex-start; gap:14px;
+    box-shadow: 0 8px 20px rgba(16,26,46,0.05); margin-bottom: 16px;
+  }
+  .bonus-card .num{
+    background: var(--accent); color:#14100d; font-weight:800; font-size:0.75rem;
+    border-radius: 8px; padding: 4px 10px; display:inline-block; margin-bottom:8px;
+  }
+  .bonus-card h3{ font-size: 1rem; margin-bottom: 4px; }
+  .bonus-card p{ color: var(--text-dim); font-size: 0.88rem; }
+  .bonus-card .value{ text-align:right; white-space:nowrap; }
+  .bonus-card .value .old{ display:block; text-decoration:line-through; color:var(--text-dim); font-size:0.8rem; }
+  .bonus-card .value .free{ color: var(--green); font-weight:800; font-size:0.85rem; }
+
+  .bonus-total{
+    text-align:center; background:#fbeecb; color:#8a5a10; font-weight:700; font-size:0.9rem;
+    border-radius: 20px; padding: 10px 20px; display:block; width:fit-content; margin: 22px auto 0;
+  }
+
+  /* ===== QUÉ VAS A ENCONTRAR (fondo claro, tarjetas) ===== */
+  .section-light{ padding: 44px 0; }
+  .feature-grid{ display: grid; gap: 14px; grid-template-columns: 1fr; }
+  @media(min-width:560px){ .feature-grid{ grid-template-columns: 1fr 1fr; } }
+  .feature-card{
+    background: var(--panel); border: 1px solid var(--panel-border); border-radius: var(--radius);
+    box-shadow: 0 8px 20px rgba(16,26,46,0.05);
+    padding: 20px;
+  }
+  .feature-icon{ font-size: 1.8rem; margin-bottom: 10px; }
+  .feature-card h3{ font-size: 1.02rem; margin-bottom: 6px; }
+  .feature-card p{ color: var(--text-dim); font-size: 0.9rem; }
+
+  /* ===== ¿TE SENTÍS IDENTIFICADO? ===== */
+  .pain-item{
+    background: var(--pink-bg); border-radius: var(--radius-sm);
+    display:flex; gap:12px; align-items:flex-start;
+    padding: 16px; margin-bottom: 12px;
+  }
+  .pain-item .x{
+    background: var(--pink-text); color:#fff; font-weight:800; font-size:0.8rem;
+    border-radius:50%; width:22px; height:22px; min-width:22px;
+    display:flex; align-items:center; justify-content:center; margin-top: 2px;
+  }
+  .pain-item h4{ font-size: 0.95rem; margin-bottom: 2px; }
+  .pain-item p{ color: var(--text-dim); font-size: 0.85rem; }
+
+  /* ===== SECCIONES OSCURAS ===== */
+  .section-dark{ background: var(--bg-dark); color: var(--text-light); padding: 46px 0; }
+  .section-dark .section-title{ color: var(--text-light); }
+  .section-dark .section-eyebrow{ color: var(--text-light-dim); }
+
+  .included-card{
+    background: var(--bg-dark-2); border-radius: var(--radius);
+    padding: 22px; margin: 20px 0;
+  }
+  .included-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.08); font-size:0.92rem;
+  }
+  .included-row:last-of-type{ border-bottom:none; }
+  .included-row .check{ color: var(--accent); font-weight:800; margin-right:8px; }
+  .included-row .tag-free{ color: var(--green); font-weight:700; }
+
+  .included-total-row{ text-align:center; margin-top: 18px; }
+  .included-total-row .old{ color: var(--text-light-dim); text-decoration: line-through; font-size:0.9rem; display:block; margin-bottom:2px; }
+  .included-total-row .label{ color: var(--accent); font-weight:700; font-size:0.85rem; letter-spacing:0.5px; text-transform:uppercase; }
+  .included-total-row .new{ font-size: 2.3rem; font-weight:800; margin: 4px 0; }
+  .included-total-row .note{ color: var(--text-light-dim); font-size:0.85rem; margin-bottom: 16px; }
+
+  .dark-cta{
+    display:block; text-align:center; background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+    color:#14100d; font-weight:700; padding:16px; border-radius:12px; text-decoration:none; margin-top: 8px;
+  }
+  .dark-note{ text-align:center; color: var(--text-light-dim); font-size:0.8rem; margin-top:14px; }
+
+  /* ===== PASOS (numerados — sí corresponde: son un proceso secuencial) ===== */
+  .steps-row{ display:grid; grid-template-columns:1fr; gap: 22px; margin: 30px 0; }
+  @media(min-width:640px){ .steps-row{ grid-template-columns: 1fr 1fr 1fr; } }
+  .step{ text-align:center; }
+  .step .circle{
+    width:44px; height:44px; border-radius:50%; background: var(--accent); color:#14100d;
+    font-weight:800; display:flex; align-items:center; justify-content:center; margin: 0 auto 12px;
+  }
+  .step h4{ font-size:1rem; margin-bottom:6px; }
+  .step p{ color: var(--text-light-dim); font-size:0.85rem; }
+
+  /* ===== GARANTÍA ===== */
+  .guarantee{
+    background: #eafaf0; border-radius: var(--radius);
+    padding: 24px; margin: 24px auto; text-align:center; max-width:560px;
+  }
+  .guarantee .icon{ font-size: 2.2rem; margin-bottom: 10px; }
+  .guarantee h3{ color: var(--green); font-size:1.1rem; margin-bottom:8px; }
+  .guarantee p{ color: var(--text-dim); font-size:0.9rem; }
+
+  /* ===== FAQ ===== */
+  details{
+    background: var(--panel); border: 1px solid var(--panel-border); border-radius: var(--radius-sm);
+    padding: 16px 18px; margin-bottom: 10px;
+    box-shadow: 0 6px 14px rgba(16,26,46,0.04);
+  }
+  summary{ cursor: pointer; font-weight: 600; font-size:0.95rem; }
+  details p{ color: var(--text-dim); font-size: 0.88rem; margin-top: 10px; }
+
+  /* ===== TESTIMONIOS ===== */
+  .testimonial-card{
+    background: var(--panel); border: 1px solid var(--panel-border); border-radius: var(--radius);
+    box-shadow: 0 8px 20px rgba(16,26,46,0.05);
+    padding: 18px; margin-bottom: 14px;
+  }
+  .testimonial-card .stars{ color: var(--accent); margin-bottom: 8px; letter-spacing:2px; }
+  .testimonial-card p{ color: var(--text-dim); font-size: 0.92rem; margin-bottom: 10px; font-style: italic; }
+  .testimonial-card .name{ font-weight: 700; font-size: 0.85rem; }
+
+  footer{ text-align:center; color: var(--text-light-dim); font-size: 0.78rem; padding: 26px 0 10px; }
+  .footer-links{ display:flex; justify-content:center; gap:16px; margin-top:10px; }
+  .footer-links a{ color: var(--text-light-dim); text-decoration:none; font-size:0.78rem; }
 
   /* ===== POPUP DE SALIDA (exit intent) ===== */
   .exit-overlay{
-    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    display: none; position: fixed; inset: 0; background: rgba(16,26,46,0.65);
     z-index: 200; align-items: center; justify-content: center; padding: 20px;
   }
   .exit-overlay.active{ display: flex; }
   .exit-modal{
-    background: var(--bg-panel); border-radius: var(--radius);
-    padding: 28px 22px; max-width: 400px; text-align: center;
-    position: relative;
+    background: var(--panel); border-radius: var(--radius);
+    padding: 30px 24px; max-width: 400px; text-align: center;
+    position: relative; box-shadow: 0 30px 60px rgba(0,0,0,0.3);
   }
-  .exit-modal h2{ font-size: 1.3rem; margin-bottom: 10px; }
-  .exit-modal p{ color: var(--text-dim); font-size: 0.9rem; margin-bottom: 16px; }
+  .exit-modal h2{ font-size: 1.35rem; font-weight:800; margin-bottom: 10px; }
+  .exit-modal p{ color: var(--text-dim); font-size: 0.92rem; margin-bottom: 18px; }
   .exit-close{
-    position: absolute; top: 10px; right: 14px;
+    position: absolute; top: 12px; right: 14px;
     background: none; border: none; color: var(--text-dim);
     font-size: 1.2rem; cursor: pointer;
   }
@@ -163,14 +266,17 @@
   /* ===== BARRA STICKY INFERIOR ===== */
   .sticky-bar{
     position: fixed; bottom: 0; left: 0; right: 0;
-    background: var(--bg-panel); border-top: 1px solid #33291d;
-    padding: 10px 16px; display: flex; align-items: center;
+    background: var(--bg-dark); color: var(--text-light);
+    padding: 12px 18px; display: flex; align-items: center;
     justify-content: space-between; gap: 12px; z-index: 100;
+    box-shadow: 0 -8px 20px rgba(0,0,0,0.15);
   }
-  .sticky-bar .price{ font-weight: 800; color: var(--accent); }
+  .sticky-bar .sticky-meta{ display:flex; flex-direction:column; line-height:1.25; }
+  .sticky-bar .sticky-old{ color: var(--text-light-dim); text-decoration:line-through; font-size:0.75rem; }
+  .sticky-bar .price{ font-weight: 800; color: #fff; font-size:1.05rem; }
   .sticky-bar a{
-    background: var(--accent); color:#14100d; font-weight:700;
-    padding: 10px 18px; border-radius: 8px; text-decoration:none; white-space:nowrap;
+    background: linear-gradient(90deg, var(--accent), var(--accent-dark)); color:#14100d; font-weight:700;
+    padding: 11px 20px; border-radius: 10px; text-decoration:none; white-space:nowrap;
   }
 </style>
 </head>
@@ -181,106 +287,240 @@
   <div class="container">
 
     <div class="hero">
-      <img class="hero-img" src="REEMPLAZAR-hero.jpg" alt="Venta de comida en la calle">
       <h1>Cómo armar un puesto de comida y generar ingreso extra en menos de 8hs por día</h1>
       <p class="subtitle">Guía paso a paso, con lo que aprendí vendiendo comida a pie: costos, horarios, y cómo armar el día para que rinda.</p>
+      <div class="rating"><span class="stars">★★★★★</span> 4.9 (500+ ventas)</div>
+      <img class="hero-img" src="REEMPLAZAR-hero.jpg" alt="Venta de comida en la calle">
     </div>
 
-    <!-- BULLETS DE BENEFICIOS -->
-    <ul class="benefit-list">
-      <li>Método de cálculo de costos y margen, paso a paso</li>
-      <li>Cómo armar el día para que rinda en menos de 8hs</li>
-      <li>Checklist de arranque sin gastar de más</li>
-      <li>Acompañamiento por WhatsApp para tus dudas</li>
-    </ul>
+    <!-- TARJETA DE OFERTA -->
+    <div class="offer-card">
+      <div class="offer-flag">ACCESO INMEDIATO Y CUPOS LIMITADOS DE ACOMPAÑAMIENTO POR WHATSAPP</div>
 
-    <a class="cta-button" id="cta-1" href="https://mpago.la/1eaAwUd" target="_blank">Quiero la guía</a>
-    <p class="cta-sub">Pago seguro con Mercado Pago — acceso inmediato</p>
+      <div class="price-row">
+        <span class="price-old">$29.990</span>
+        <span class="price-new" id="price-display">$9.990</span>
+      </div>
+      <div class="savings">Ahorrás $20.000 (66% OFF)</div>
 
-    <!-- BARRA DE CONFIANZA -->
-    <div class="trust-bar">
-      <div class="trust-item"><span class="icon">🔒</span><span class="label">Pago seguro</span></div>
-      <div class="trust-item"><span class="icon">🛡️</span><span class="label">Garantía 7 días</span></div>
-      <div class="trust-item"><span class="icon">⚡</span><span class="label">Entrega inmediata</span></div>
-    </div>
+      <div class="bonus-row">
+        <span>🎁 Bono #1: Checklist de arranque sin gastar de más</span>
+        <span class="tag">GRATIS</span>
+      </div>
 
-    <div class="offer-box">
-      <div class="price-old">$29.990</div>
-      <div class="price-new" id="price-display">$9.990</div>
-      <div class="price-note">Precio de lanzamiento por tiempo limitado</div>
       <!-- CUPOS: editá este número a mano cuando corresponda, es real, no automático -->
-      <div class="cupos-badge">Quedan <span id="cupos-num">7</span> cupos a este precio</div>
-    </div>
+      <div class="cupos-row">● Quedan <span id="cupos-num">7</span> cupos a este precio</div>
 
-    <!-- ORDER BUMP -->
-    <label class="order-bump">
-      <input type="checkbox" id="bump-checkbox" onchange="actualizarPrecio()">
-      <div>
-        <h3>➕ Sumar: Plantilla de cálculo de costos en Excel</h3>
-        <p>Calculá margen y punto de equilibrio cargando tus propios números. <span class="bump-price">+ $2.990</span></p>
-      </div>
-    </label>
+      <div class="countdown-row">🔥 Oferta termina en <span class="badge" id="countdown-mid">--:--:--</span></div>
 
-    <div class="section-title">¿Te sentís identificado?</div>
-    <div class="pain-item"><span class="x">✕</span><p>Tenés horas libres en el día y no sabés cómo convertirlas en un ingreso real.</p></div>
-    <div class="pain-item"><span class="x">✕</span><p>Probaste vender algo, pero no tenías un plan de costos ni de horarios claro.</p></div>
-    <div class="pain-item"><span class="x">✕</span><p>Te frenás porque no sabés por dónde empezar sin arriesgar mucha plata.</p></div>
+      <!-- ORDER BUMP -->
+      <label class="order-bump">
+        <input type="checkbox" id="bump-checkbox" onchange="actualizarPrecio()">
+        <div>
+          <h3>➕ Sumar: Plantilla de cálculo de costos en Excel</h3>
+          <p>Calculá margen y punto de equilibrio cargando tus propios números. <span class="bump-price">+ $2.990</span></p>
+        </div>
+      </label>
 
-    <div class="section-title">Qué vas a encontrar adentro</div>
-    <div class="feature-grid">
-      <div class="feature-card">
-        <div class="feature-icon">🧮</div>
-        <div><h3>Cálculo real de costos y margen</h3><p>Cuánto invertís, cuánto vendés, y qué te queda limpio por día.</p></div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🕒</div>
-        <div><h3>Cómo armar el día en menos de 8hs</h3><p>Horarios y zonas donde rinde más el tiempo invertido.</p></div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">📋</div>
-        <div><h3>Checklist de arranque</h3><p>Lo mínimo que necesitás para el primer día, sin gastar de más.</p></div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">💬</div>
-        <div><h3>Acompañamiento por WhatsApp</h3><p>Dudas puntuales al implementarlo, para no quedarte trabado.</p></div>
+      <a class="cta-button" id="cta-1" href="https://mpago.la/1eaAwUd" target="_blank">Sí, quiero empezar ahora</a>
+      <p class="cta-sub">Pago seguro con Mercado Pago — acceso inmediato</p>
+
+      <div class="trust-bar">
+        <div class="trust-item">⚡ Entrega inmediata</div>
+        <div class="trust-item">🔒 Pago seguro</div>
+        <div class="trust-item">🛡️ Garantía 7 días</div>
       </div>
     </div>
-
-    <div class="section-title">Lo que dicen los que lo probaron</div>
-    <!-- Reemplazá por testimonios reales de gente que compró -->
-    <div class="testimonial-card">
-      <div class="stars">★★★★★</div>
-      <p>"Texto real de un comprador acá."</p>
-      <div class="name">— Nombre real</div>
-    </div>
-
-    <div class="guarantee">
-      <div class="icon">🛡️</div>
-      <div><h3>Garantía de 7 días</h3><p>Si sentís que no te sirve, te devolvemos el dinero.</p></div>
-    </div>
-
-    <div class="section-title">Preguntas frecuentes</div>
-    <details>
-      <summary>¿Sirve si nunca vendí nada?</summary>
-      <p>Sí, la guía arranca desde cero: qué vender, cómo calcular precios, y cómo armar el primer día.</p>
-    </details>
-    <details>
-      <summary>¿Cuánto se puede ganar realmente?</summary>
-      <p>Depende de tu zona, producto y constancia. La guía te da el método de cálculo para que estimes vos mismo tu caso, no una cifra garantizada.</p>
-    </details>
-    <details>
-      <summary>¿Cómo recibo el material?</summary>
-      <p>Al confirmarse el pago, te llega el link de descarga por email.</p>
-    </details>
-
-    <a class="cta-button" id="cta-2" href="https://mpago.la/1eaAwUd" target="_blank">Quiero la guía</a>
-
-    <footer>© 2026 — Todos los derechos reservados</footer>
   </div>
 
-  <div class="sticky-bar">
-    <div class="price" id="price-sticky">$9.990</div>
-    <a id="cta-sticky" href="https://mpago.la/1eaAwUd" target="_blank">Comprar ahora</a>
+  <!-- SECCIÓN CREMA: BONOS -->
+  <div class="section-cream">
+    <div class="container">
+      <div class="section-title">🎁 Bonos GRATIS incluidos</div>
+      <div class="section-eyebrow">Además de la guía, te llevás este regalo</div>
+
+      <div class="bonus-card">
+        <div>
+          <span class="num">#1</span>
+          <h3>Checklist de arranque</h3>
+          <p>Lo mínimo que necesitás para el primer día en la calle, sin gastar de más ni improvisar.</p>
+        </div>
+        <div class="value">
+          <span class="old">Valor: $4.990</span>
+          <span class="free">GRATIS</span>
+        </div>
+      </div>
+
+      <span class="bonus-total">Este bono tiene un valor de $4.990</span>
+    </div>
+  </div>
+
+  <!-- QUÉ VAS A ENCONTRAR ADENTRO -->
+  <div class="section-light">
+    <div class="container">
+      <div class="section-title">¿Qué vas a encontrar adentro?</div>
+      <div class="section-eyebrow">Todo lo que necesitás en un solo lugar</div>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🧮</div>
+          <h3>Cálculo real de costos y margen</h3>
+          <p>Cuánto invertís, cuánto vendés, y qué te queda limpio por día.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🕒</div>
+          <h3>Cómo armar el día en menos de 8hs</h3>
+          <p>Horarios y zonas donde rinde más el tiempo invertido.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📋</div>
+          <h3>Checklist de arranque</h3>
+          <p>Lo mínimo que necesitás para el primer día, sin gastar de más.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3>Acompañamiento por WhatsApp</h3>
+          <p>Dudas puntuales al implementarlo, para no quedarte trabado.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ¿TE SENTÍS IDENTIFICADO? -->
+  <div class="section-light" style="padding-top:0;">
+    <div class="container">
+      <div class="section-title">¿Te sentís identificado?</div>
+      <div class="section-eyebrow">Si alguno de estos problemas te suena familiar, esta guía es para vos</div>
+
+      <div class="pain-item">
+        <span class="x">✕</span>
+        <div><h4>Tenés horas libres y no sabés cómo convertirlas en ingreso</h4><p>Sabés que podés usarlas mejor, pero no tenés un plan claro.</p></div>
+      </div>
+      <div class="pain-item">
+        <span class="x">✕</span>
+        <div><h4>Probaste vender algo, pero sin un plan de costos ni horarios</h4><p>El esfuerzo se diluye porque no llevás números concretos.</p></div>
+      </div>
+      <div class="pain-item">
+        <span class="x">✕</span>
+        <div><h4>Te frenás por no saber por dónde empezar</h4><p>No querés arriesgar plata sin tener claro el primer paso.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIOS -->
+  <div class="section-light" style="padding-top:0;">
+    <div class="container">
+      <div class="section-title">Lo que dicen los que lo probaron</div>
+      <!-- Reemplazá por testimonios reales de gente que compró -->
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p>"Texto real de un comprador acá."</p>
+        <div class="name">— Nombre real</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN OSCURA: TODO LO QUE INCLUYE -->
+  <div class="section-dark">
+    <div class="container">
+      <div class="section-title">Todo lo que incluye tu compra</div>
+      <div class="section-eyebrow">Acceso inmediato a todo esto por un único pago</div>
+
+      <div class="included-card">
+        <div class="included-row"><span><span class="check">✓</span>Guía: puesto de comida en menos de 8hs</span><span>$9.990</span></div>
+        <div class="included-row"><span><span class="check">✓</span>Bono #1: Checklist de arranque</span><span class="tag-free">GRATIS</span></div>
+        <div class="included-row"><span><span class="check">✓</span>Garantía de 7 días</span><span class="tag-free">INCLUIDA</span></div>
+
+        <div class="included-total-row">
+          <span class="old">Valor total regular $34.980</span>
+          <span class="label">Oferta de hoy</span>
+          <div class="new" id="price-display-dark">$9.990</div>
+          <div class="note">Precio único · Acceso de por vida</div>
+          <a class="dark-cta" id="cta-dark" href="https://mpago.la/1eaAwUd" target="_blank">Comprar y empezar ahora</a>
+        </div>
+      </div>
+      <div class="dark-note">🛡️ Garantía de devolución de 7 días · Compra 100% segura</div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN OSCURA: CÓMO VAS A LOGRARLO -->
+  <div class="section-dark" style="padding-top:0;">
+    <div class="container">
+      <div class="section-title">Cómo vas a lograrlo (sin enredos)</div>
+      <div class="section-eyebrow">En solo 3 pasos simples</div>
+
+      <div class="steps-row">
+        <div class="step">
+          <div class="circle">1</div>
+          <h4>Comprás y descargás</h4>
+          <p>Accedés al material al instante y arrancás el día uno con el camino marcado.</p>
+        </div>
+        <div class="step">
+          <div class="circle">2</div>
+          <h4>Seguís la guía paso a paso</h4>
+          <p>Costos, horarios y checklist para armar el día en menos de 8hs.</p>
+        </div>
+        <div class="step">
+          <div class="circle">3</div>
+          <h4>Resolvés dudas sobre la marcha</h4>
+          <p>Usás el acompañamiento por WhatsApp para no quedarte trabado.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="guarantee">
+        <div class="icon">🛡️</div>
+        <h3>Garantía de 7 días</h3>
+        <p>Si sentís que no te sirve, escribinos dentro de los primeros 7 días y te devolvemos el dinero.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section-light">
+    <div class="container">
+      <div class="section-title">Preguntas frecuentes</div>
+      <div class="section-eyebrow">Resolvemos todas tus dudas</div>
+
+      <details>
+        <summary>¿Sirve si nunca vendí nada?</summary>
+        <p>Sí, la guía arranca desde cero: qué vender, cómo calcular precios, y cómo armar el primer día.</p>
+      </details>
+      <details>
+        <summary>¿Cuánto se puede ganar realmente?</summary>
+        <p>Depende de tu zona, producto y constancia. La guía te da el método de cálculo para que estimes vos mismo tu caso, no una cifra garantizada.</p>
+      </details>
+      <details>
+        <summary>¿Cómo recibo el material?</summary>
+        <p>Al confirmarse el pago, te llega el link de descarga por email.</p>
+      </details>
+      <details>
+        <summary>¿Cómo es el acompañamiento por WhatsApp?</summary>
+        <p>Podés escribir tus dudas puntuales al implementar la guía, para no quedarte trabado en el camino.</p>
+      </details>
+    </div>
+  </div>
+
+  <!-- CTA FINAL OSCURA -->
+  <div class="section-dark">
+    <div class="container" style="text-align:center;">
+      <div class="section-title">No sigas improvisando: arrancá hoy con un plan real</div>
+
+      <div class="price-row" style="justify-content:center; margin-top:18px;">
+        <span class="price-old" style="color:var(--text-light-dim);">$29.990</span>
+        <span class="price-new" style="color:#fff;" id="price-display-final">$9.990</span>
+      </div>
+      <div class="savings">Incluye 1 bono gratis · Ahorrás $20.000</div>
+
+      <a class="dark-cta" id="cta-2" href="https://mpago.la/1eaAwUd" target="_blank">Comprar y empezar ahora</a>
+      <div class="dark-note">🔒 Pago seguro &nbsp;·&nbsp; ✉️ Acceso inmediato</div>
+    </div>
+
+    <footer>
+      © 2026 — Todos los derechos reservados
+      <div class="footer-links"><a href="#">Términos y condiciones</a><a href="#">Política de privacidad</a></div>
+    </footer>
   </div>
 
   <!-- POPUP DE SALIDA (exit intent) -->
@@ -293,18 +533,30 @@
     </div>
   </div>
 
+  <div class="sticky-bar">
+    <div class="sticky-meta">
+      <span class="sticky-old">$29.990</span>
+      <span class="price" id="price-sticky">$9.990</span>
+    </div>
+    <a id="cta-sticky" href="https://mpago.la/1eaAwUd" target="_blank">Comprar ahora</a>
+  </div>
+
 <script>
   // Contador REAL: poné la fecha/hora exacta en que termina tu oferta
   const fechaFin = new Date(2026, 8, 30, 23, 59, 59); // 30 de septiembre 2026
 
   function actualizarContador(){
     const diff = fechaFin - new Date();
-    const el = document.getElementById('countdown-top');
-    if (diff <= 0){ el.textContent = "finalizada"; return; }
+    const texto = diff <= 0 ? "finalizada" : formatear(diff);
+    document.getElementById('countdown-top').textContent = texto;
+    const mid = document.getElementById('countdown-mid');
+    if (mid) mid.textContent = texto;
+  }
+  function formatear(diff){
     const h = Math.floor(diff / 3600000);
     const m = Math.floor((diff % 3600000) / 60000);
     const s = Math.floor((diff % 60000) / 1000);
-    el.textContent = String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
   }
   actualizarContador();
   setInterval(actualizarContador, 1000);
@@ -323,8 +575,11 @@
     const textoFormateado = "$" + total.toLocaleString('es-AR');
 
     document.getElementById('price-display').textContent = textoFormateado;
+    document.getElementById('price-display-dark').textContent = textoFormateado;
+    document.getElementById('price-display-final').textContent = textoFormateado;
     document.getElementById('price-sticky').textContent = textoFormateado;
     document.getElementById('cta-1').href = link;
+    document.getElementById('cta-dark').href = link;
     document.getElementById('cta-2').href = link;
     document.getElementById('cta-sticky').href = link;
   }
